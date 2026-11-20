@@ -1,11 +1,11 @@
 # ⬡ Axon Terminal
 
-**An AI-native terminal for macOS and Linux.** Claude lives inside your shell — ask questions, get explanations, run commands, and build persistent AI memory, all without leaving the prompt.
+**An AI-native terminal for macOS, Linux and Windows.** Claude lives inside your shell — ask questions, get explanations, run commands, and build persistent AI memory, all without leaving the prompt.
 
-[![Download](https://img.shields.io/badge/Download-macOS%20%7C%20Linux-00ff88?style=flat-square&logo=apple&logoColor=white)](https://treillint.github.io/axon-terminal)
+[![Download](https://img.shields.io/badge/Download-macOS%20%7C%20Linux%20%7C%20Windows-00ff88?style=flat-square&logo=apple&logoColor=white)](https://treillint.github.io/axon-terminal)
 [![Release](https://img.shields.io/github/v/release/Treillint/axon-terminal?style=flat-square&color=00ff88)](https://github.com/Treillint/axon-terminal/releases/latest)
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-macOS%2013%2B%20%7C%20Linux%20ARM64-lightgrey?style=flat-square)](https://treillint.github.io/axon-terminal)
+[![Platform](https://img.shields.io/badge/platform-macOS%2013%2B%20%7C%20Linux%20ARM64%20%7C%20Windows%2010%2B-lightgrey?style=flat-square)](https://treillint.github.io/axon-terminal)
 
 ---
 
@@ -47,6 +47,20 @@ chmod +x AxonTerminal.AppImage
 ```
 
 **Requirements:** Ubuntu 22.04+ or Debian 12+ · ARM64 (aarch64)
+
+### Windows
+
+#### Winget (recommended)
+```powershell
+winget install Treillint.AxonTerminal
+```
+
+#### Direct download
+1. Go to [treillint.github.io/axon-terminal](https://treillint.github.io/axon-terminal)
+2. Click **Download for Windows**
+3. Double-click `AxonTerminal.msix` to install
+
+**Requirements:** Windows 10 version 1903 or later · x64
 
 ---
 
