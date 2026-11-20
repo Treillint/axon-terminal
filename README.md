@@ -37,10 +37,18 @@ brew install --cask axon-terminal
 **Requirements:** macOS 13 Ventura or later · Apple Silicon or Intel
 
 ### Linux (ARM64)
-1. Go to [treillint.github.io/axon-terminal](https://treillint.github.io/axon-terminal)
-2. Click **Download for Linux**
-3. Make executable and run:
 
+#### apt (recommended)
+```bash
+curl -fsSL https://treillint.github.io/axon-terminal/apt/KEY.gpg \
+  | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/treillint.gpg
+echo "deb [arch=arm64 signed-by=/etc/apt/trusted.gpg.d/treillint.gpg] \
+  https://treillint.github.io/axon-terminal/apt stable main" \
+  | sudo tee /etc/apt/sources.list.d/axon-terminal.list
+sudo apt update && sudo apt install axon-terminal
+```
+
+#### AppImage (no install required)
 ```bash
 chmod +x AxonTerminal.AppImage
 ./AxonTerminal.AppImage
