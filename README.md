@@ -1,17 +1,17 @@
 # ⬡ Axon Terminal
 
-**An AI-native terminal for macOS.** Claude lives inside your shell — ask questions, get explanations, run commands, and build persistent AI memory, all without leaving the prompt.
+**An AI-native terminal for macOS and Linux.** Claude lives inside your shell — ask questions, get explanations, run commands, and build persistent AI memory, all without leaving the prompt.
 
-[![Download](https://img.shields.io/badge/Download-macOS-00ff88?style=flat-square&logo=apple&logoColor=white)](https://treillint.github.io/axon-terminal)
+[![Download](https://img.shields.io/badge/Download-macOS%20%7C%20Linux-00ff88?style=flat-square&logo=apple&logoColor=white)](https://treillint.github.io/axon-terminal)
 [![Release](https://img.shields.io/github/v/release/Treillint/axon-terminal?style=flat-square&color=00ff88)](https://github.com/Treillint/axon-terminal/releases/latest)
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-macOS%2013%2B-lightgrey?style=flat-square)](https://treillint.github.io/axon-terminal)
+[![Platform](https://img.shields.io/badge/platform-macOS%2013%2B%20%7C%20Linux%20ARM64-lightgrey?style=flat-square)](https://treillint.github.io/axon-terminal)
 
 ---
 
 ## What is Axon Terminal?
 
-Axon Terminal replaces the traditional shell with an AI-integrated experience. It runs a real `zsh` session via PTY — so every standard shell command works exactly as you'd expect. On top of that, it layers an AI mode powered by Claude (Anthropic), Ollama local models, or any OpenAI-compatible remote API (Groq, Together, OpenRouter).
+Axon Terminal replaces the traditional shell with an AI-integrated experience. It runs a real shell session via PTY — so every standard shell command works exactly as you'd expect. On top of that, it layers an AI mode powered by Claude (Anthropic), Ollama local models, or any OpenAI-compatible remote API (Groq, Together, OpenRouter).
 
 The result: a terminal that understands what you're trying to do.
 
@@ -29,7 +29,7 @@ The result: a terminal that understands what you're trying to do.
 - **`? <question>`** — ask AI anything, from any mode, at any time
 - **`command_not_found` routing** — unknown commands are automatically sent to AI in AI mode
 - **Streaming responses** — answers appear token by token, no waiting
-- **Up-arrow recall** — AI queries are saved to zsh history for easy re-use
+- **Up-arrow recall** — AI queries are saved to shell history for easy re-use
 
 ### Models
 | Backend | How to activate | Notes |
@@ -53,7 +53,7 @@ All memory lives in `~/.axon/axonVM/`. Entries are scored by keyword relevance a
 | `mem clear` | Clear all entries |
 
 ### Shell
-- Full `zsh` PTY — every shell feature works (aliases, functions, pipes, redirects)
+- Full PTY shell (auto-detects `$SHELL`, falls back through zsh → bash → sh)
 - Multi-tab support: `⌘T` new tab, `⌘W` close tab
 - Font size: `⌘+` / `⌘-`
 - Tab titles update to current directory via OSC-2
@@ -62,24 +62,36 @@ All memory lives in `~/.axon/axonVM/`. Entries are scored by keyword relevance a
 - Dark terminal theme with green accent (`#00ff88`)
 - Narrow left sidebar: AI/Legacy mode toggle, auto-save, Axon VM manager, model picker
 - Title bar shows current mode + active model
-- `⬡ connected` badge — tap to set API keys
+- `⬡ connected` badge — tap to set, show/hide, or clear API keys
 
 ---
 
 ## Installation
 
-### Download (recommended)
+### macOS
 1. Go to [treillint.github.io/axon-terminal](https://treillint.github.io/axon-terminal)
 2. Click **Download for macOS**
 3. Open `AxonTerminal.dmg`
 4. Drag **Axon Terminal** to **Applications**
 5. Launch from Applications — macOS Gatekeeper will clear it (notarized + stapled)
 
-### Requirements
-- macOS 13 Ventura or later
-- Apple Silicon or Intel (universal binary)
-- An [Anthropic API key](https://console.anthropic.com) for Claude AI mode
-- [Ollama](https://ollama.com) installed if you want local models
+**Requirements:** macOS 13 Ventura or later · Apple Silicon or Intel
+
+### Linux (ARM64)
+1. Go to [treillint.github.io/axon-terminal](https://treillint.github.io/axon-terminal)
+2. Click **Download for Linux**
+3. Make executable and run:
+
+```bash
+chmod +x AxonTerminal.AppImage
+./AxonTerminal.AppImage
+```
+
+**Requirements:** Ubuntu 22.04+ or Debian 12+ · ARM64 (aarch64)
+
+### API Key
+An [Anthropic API key](https://console.anthropic.com) is required for Claude AI mode.  
+[Ollama](https://ollama.com) local models work without any key.
 
 ---
 
@@ -154,26 +166,29 @@ axon_terminal/
 │   ├── memory/
 │   │   └── memory_store.dart    # JSON memory entries, keyword scoring, top-3 injection
 │   ├── server/
-│   │   └── axon_server.dart     # HttpServer on port 9099; zsh init script builder
+│   │   └── axon_server.dart     # HttpServer on port 9099; shell init script builder
 │   ├── shell/
-│   │   └── shell_session.dart   # PTY via flutter_pty, hardcoded /bin/zsh
+│   │   └── shell_session.dart   # PTY via flutter_pty; auto-detects $SHELL → zsh → bash → sh
 │   ├── pages/
 │   │   └── home_page.dart       # UI: title bar, tabs, sidebar, all dialogs
 │   └── app/
 │       ├── app.dart
 │       └── theme.dart           # AxonTheme constants
-└── macos/
-    └── Runner/
-        ├── Release.entitlements # No sandbox; network client+server; file access
-        └── MainFlutterWindow.swift  # 80% screen, centered window
+├── macos/
+│   └── Runner/
+│       ├── Release.entitlements # No sandbox; network client+server; file access
+│       └── MainFlutterWindow.swift  # 80% screen, centered window
+└── linux/
+    └── runner/
+        └── my_application.cc    # 80% monitor workarea, centered window (GdkDisplay API)
 ```
 
 ### How the shell hook works
-Axon injects a zsh init script 900ms after PTY start. The script:
+Axon injects an init script 900ms after PTY start. The script:
 - Sets `command_not_found_handler` to POST unknown commands to `localhost:9099/query`
 - Registers `?` as a prefix alias that POSTs to `/query` from any mode
 - Sets `precmd_functions` to enforce the `⬡ axon ~/` prompt in AI mode and emit OSC-2 for tab title updates
-- Saves AI queries to zsh history via `print -s`
+- Saves AI queries to shell history via `print -s`
 
 The HTTP server (`axon_server.dart`) bridges the shell hook to the AI service and streams responses back to the terminal.
 
@@ -181,6 +196,7 @@ The HTTP server (`axon_server.dart`) bridges the shell hook to the AI service an
 
 ## Building from Source
 
+### macOS
 ```zsh
 # Prerequisites: Flutter 3.x, Xcode 15+, CocoaPods
 
@@ -191,11 +207,21 @@ cd macos && pod install && cd ..
 flutter run -d macos
 ```
 
-To build a distributable DMG:
+To build a distributable DMG (signs, notarizes, staples):
 ```zsh
 ./build_dmg.sh
 ```
-The script builds, signs (Developer ID), notarizes with Apple, and staples — producing a ready-to-distribute `AxonTerminal.dmg`.
+
+### Linux ARM64
+```bash
+# Prerequisites: Ubuntu 22.04+ on ARM64, ~/flutter-framework.tar.gz, ~/dart-sdk-linux-arm64.zip
+
+git clone https://github.com/Treillint/axon-terminal.git
+cd axon-terminal
+bash build_appimage.sh
+```
+
+Produces `AxonTerminal.AppImage` in the current directory.
 
 ---
 
