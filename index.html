@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Axon Terminal — AI-native terminal for macOS</title>
+<title>Axon Terminal — AI-native terminal</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   body{background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Menlo',monospace;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;}
@@ -14,10 +14,12 @@
   .features{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:48px;}
   .feat{background:#161b22;border:1px solid #21262d;border-radius:6px;padding:14px 18px;font-size:12px;color:#8b949e;min-width:160px;text-align:center;}
   .feat strong{display:block;color:#e6edf3;font-size:13px;margin-bottom:4px;}
+  .downloads{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;align-items:center;}
   .download{display:inline-flex;align-items:center;gap:10px;background:#00ff88;color:#0d1117;font-size:15px;font-weight:700;padding:14px 32px;border-radius:6px;text-decoration:none;letter-spacing:0.3px;transition:opacity 0.15s;}
+  .download.linux{background:#161b22;color:#00ff88;border:1px solid #00ff88;}
   .download:hover{opacity:0.88;}
   .download svg{width:18px;height:18px;}
-  .meta{margin-top:14px;font-size:11px;color:#484f58;}
+  .meta{margin-top:14px;font-size:11px;color:#484f58;text-align:center;}
   .req{margin-top:48px;font-size:11px;color:#484f58;text-align:center;}
   .footer{margin-top:64px;font-size:11px;color:#484f58;text-align:center;border-top:1px solid #21262d;padding-top:24px;width:100%;max-width:600px;}
   .footer a{color:#484f58;text-decoration:none;}
@@ -30,7 +32,7 @@
 <div class="badge">⬡ FREE DOWNLOAD</div>
 
 <h1>Axon <span>Terminal</span></h1>
-<p class="sub">An AI-native terminal for macOS. Claude lives inside your shell — ask questions, get explanations, run commands, all without leaving the prompt.</p>
+<p class="sub">An AI-native terminal for macOS and Linux. Claude lives inside your shell — ask questions, get explanations, run commands, all without leaving the prompt.</p>
 
 <div class="features">
   <div class="feat"><strong>AI Mode</strong>Unknown commands routed to Claude</div>
@@ -41,15 +43,30 @@
   <div class="feat"><strong>? prefix</strong>Ask AI anything, any mode</div>
 </div>
 
-<a class="download" href="https://github.com/Treillint/axon-terminal/releases/latest/download/AxonTerminal.dmg">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-    <polyline points="7 10 12 15 17 10"/>
-    <line x1="12" y1="15" x2="12" y2="3"/>
-  </svg>
-  Download for macOS
-</a>
-<p class="meta">macOS 13 Ventura or later &nbsp;·&nbsp; Apple Silicon + Intel &nbsp;·&nbsp; Free</p>
+<div class="downloads">
+  <div style="text-align:center;">
+    <a class="download" href="https://github.com/Treillint/axon-terminal/releases/latest/download/AxonTerminal.dmg">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Download for macOS
+    </a>
+    <p class="meta">macOS 13 Ventura or later &nbsp;·&nbsp; Apple Silicon + Intel</p>
+  </div>
+  <div style="text-align:center;">
+    <a class="download linux" href="https://github.com/Treillint/axon-terminal/releases/latest/download/AxonTerminal.AppImage">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Download for Linux
+    </a>
+    <p class="meta">Ubuntu 22.04+ / Debian 12+ &nbsp;·&nbsp; ARM64</p>
+  </div>
+</div>
 
 <p class="req">
   Requires an <a href="https://www.anthropic.com" style="color:#00ff88;text-decoration:none;">Anthropic API key</a> for Claude AI mode.
@@ -64,7 +81,8 @@
     &nbsp;·&nbsp;
     &copy; 2026 Treillint LLC
   </p>
-  <p style="margin-top:8px;">Install: open the DMG and drag <code>Axon Terminal</code> to <code>Applications</code></p>
+  <p style="margin-top:8px;">macOS: open the DMG and drag <code>Axon Terminal</code> to <code>Applications</code></p>
+  <p style="margin-top:4px;">Linux: <code>chmod +x AxonTerminal.AppImage && ./AxonTerminal.AppImage</code></p>
 </div>
 
 </body>
