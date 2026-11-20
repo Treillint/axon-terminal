@@ -28,6 +28,14 @@
   .req{margin-top:36px;font-size:11px;color:#484f58;text-align:center;}
   .req a{color:#00ff88;text-decoration:none;}
 
+  /* ── Download stats ── */
+  .dl-stats{display:none;gap:28px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:32px;padding:14px 24px;background:#0d1f0d;border:1px solid #1a3a1a;border-radius:8px;}
+  .dl-stat{text-align:center;min-width:70px;}
+  .dl-stat .num{display:block;font-size:22px;font-weight:700;color:#00ff88;font-variant-numeric:tabular-nums;letter-spacing:-0.5px;}
+  .dl-stat .lbl{display:block;font-size:10px;color:#484f58;letter-spacing:0.5px;text-transform:uppercase;margin-top:3px;}
+  .dl-stat.total .num{font-size:28px;}
+  .dl-divider{width:1px;height:36px;background:#1a3a1a;}
+
   /* ── README section ── */
   .readme-wrap{max-width:860px;margin:0 auto;padding:0 24px 80px;}
   .readme-divider{border:none;border-top:1px solid #21262d;margin:0 0 48px;}
@@ -116,6 +124,27 @@
     </div>
   </div>
 
+  <!-- ── Download stats (populated by JS) ── -->
+  <div id="dl-stats" class="dl-stats">
+    <div class="dl-stat total">
+      <span class="num" id="dl-total">—</span>
+      <span class="lbl">total downloads</span>
+    </div>
+    <div class="dl-divider"></div>
+    <div class="dl-stat">
+      <span class="num" id="dl-mac">—</span>
+      <span class="lbl">macOS</span>
+    </div>
+    <div class="dl-stat">
+      <span class="num" id="dl-linux">—</span>
+      <span class="lbl">Linux</span>
+    </div>
+    <div class="dl-stat">
+      <span class="num" id="dl-win">—</span>
+      <span class="lbl">Windows</span>
+    </div>
+  </div>
+
   <p class="req">
     Requires an <a href="https://www.anthropic.com">Anthropic API key</a> for Claude AI mode.
     Local models via <a href="https://ollama.com">Ollama</a> work without a key.
@@ -139,6 +168,30 @@
 </div>
 
 <script>
+  // ── Download analytics (GitHub Releases API) ──────────────────────
+  fetch('https://api.github.com/repos/Treillint/axon-terminal/releases')
+    .then(r => r.json())
+    .then(releases => {
+      let mac = 0, linux = 0, win = 0;
+      for (const rel of releases) {
+        for (const asset of (rel.assets || [])) {
+          const n = asset.name.toLowerCase();
+          const c = asset.download_count || 0;
+          if (n.endsWith('.dmg'))       mac   += c;
+          else if (n.endsWith('.appimage')) linux += c;
+          else if (n.endsWith('.msix'))  win   += c;
+        }
+      }
+      const total = mac + linux + win;
+      document.getElementById('dl-total').textContent = total.toLocaleString();
+      document.getElementById('dl-mac').textContent   = mac.toLocaleString();
+      document.getElementById('dl-linux').textContent = linux.toLocaleString();
+      document.getElementById('dl-win').textContent   = win.toLocaleString();
+      document.getElementById('dl-stats').style.display = 'flex';
+    })
+    .catch(() => {}); // fail silently if rate-limited
+
+  // ── README ────────────────────────────────────────────────────────
   fetch('https://raw.githubusercontent.com/Treillint/axon-terminal/main/README.md')
     .then(r => r.text())
     .then(md => {
