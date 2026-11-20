@@ -15,55 +15,6 @@ Axon Terminal replaces the traditional shell with an AI-integrated experience. I
 
 The result: a terminal that understands what you're trying to do.
 
-```
-⬡ axon ~/ ❯ ? what does this docker-compose file do
-⬡ axon ~/ ❯ deploy my app to staging
-⬡ axon ~/ ❯ mem save deployment-notes
-```
-
----
-
-## Features
-
-### AI Mode
-- **`? <question>`** — ask AI anything, from any mode, at any time
-- **`command_not_found` routing** — unknown commands are automatically sent to AI in AI mode
-- **Streaming responses** — answers appear token by token, no waiting
-- **Up-arrow recall** — AI queries are saved to shell history for easy re-use
-
-### Models
-| Backend | How to activate | Notes |
-|---|---|---|
-| Claude (Anthropic) | `axon model claude` | Default; requires API key |
-| Local (Ollama) | `axon model use <name>` | No API key needed; runs fully offline |
-| Remote API | `axon remote on` | Groq, Together, OpenRouter, any OpenAI-compatible endpoint |
-
-### Axon VM — Persistent AI Memory
-All memory lives in `~/.axon/axonVM/`. Entries are scored by keyword relevance and injected as context into every AI query.
-
-| Command | Description |
-|---|---|
-| `mem save <label>` | Save the last AI response |
-| `mem import <label> <file>` | Import a file's contents into memory |
-| `mem list` | List all saved entries |
-| `mem show <id>` | Display an entry with headers |
-| `mem retrieve <id>` | Raw content only (cat-like) |
-| `mem run <id>` | Execute saved code |
-| `mem rm <id>` | Delete an entry |
-| `mem clear` | Clear all entries |
-
-### Shell
-- Full PTY shell (auto-detects `$SHELL`, falls back through zsh → bash → sh)
-- Multi-tab support: `⌘T` new tab, `⌘W` close tab
-- Font size: `⌘+` / `⌘-`
-- Tab titles update to current directory via OSC-2
-
-### UI
-- Dark terminal theme with green accent (`#00ff88`)
-- Narrow left sidebar: AI/Legacy mode toggle, auto-save, Axon VM manager, model picker
-- Title bar shows current mode + active model
-- `⬡ connected` badge — tap to set, show/hide, or clear API keys
-
 ---
 
 ## Installation
@@ -89,38 +40,176 @@ chmod +x AxonTerminal.AppImage
 
 **Requirements:** Ubuntu 22.04+ or Debian 12+ · ARM64 (aarch64)
 
-### API Key
-An [Anthropic API key](https://console.anthropic.com) is required for Claude AI mode.  
-[Ollama](https://ollama.com) local models work without any key.
-
 ---
 
 ## Setup
 
-### Claude API Key
-Click **⬡ set API key** in the title bar, or run:
-```zsh
+### 1. Set your API key
+
+Click **⬡ set API key** in the title bar, or type directly in the terminal:
+
+```
 axon key sk-ant-...
 ```
 
-### Ollama (local models)
-```zsh
-# Pull a model
-axon model pull llama3.2
+Your key is stored locally and never leaves your machine except to reach Anthropic's API.
 
-# Switch to it
-axon model use llama3.2
+### 2. Activate AI mode
 
-# Switch back to Claude
-axon model claude
+```
+axon ai
 ```
 
-### Remote API (Groq, Together, OpenRouter)
-```zsh
-axon remote key gsk_...                          # your API key
-axon remote url https://api.groq.com/openai/v1   # endpoint
-axon remote model llama-3.3-70b-versatile        # model name
-axon remote on                                    # activate
+The prompt changes to `⬡ axon ~/` — you're now in AI mode.
+
+---
+
+## Tutorial
+
+### Asking questions
+
+Prefix any line with `?` to ask the AI without leaving the terminal:
+
+```
+⬡ axon ~/ ❯ ? what does the grep -P flag do
+```
+```
+The -P flag tells grep to use Perl-compatible regular expressions (PCRE).
+This enables lookaheads, lookbehinds, and other advanced regex features
+not available in basic or extended regex modes.
+
+Example:
+  grep -P '(?<=foo)bar' file.txt   # matches 'bar' only when preceded by 'foo'
+```
+
+The `?` prefix works from any mode — you don't need to switch to AI mode first.
+
+---
+
+### Explaining shell output
+
+Run a command, then ask what it means:
+
+```
+⬡ axon ~/ ❯ df -h
+Filesystem      Size   Used  Avail Capacity  Mounted on
+/dev/disk3s1s1  460G   8.5G   217G     4%   /
+
+⬡ axon ~/ ❯ ? explain the output above
+```
+```
+Your disk is 460GB total. Only 8.5GB is used (4%), leaving 217GB free.
+The filesystem is an APFS volume on disk3 — typical on macOS with Apple Silicon.
+You have plenty of space.
+```
+
+---
+
+### Debugging errors
+
+Paste an error and ask for help — the terminal context is automatically included:
+
+```
+⬡ axon ~/ ❯ pip install numpy
+error: externally-managed-environment
+
+⬡ axon ~/ ❯ ? how do I fix this
+```
+```
+This error means your Python is managed by the system package manager
+(Homebrew or the OS), which prevents pip from installing globally.
+
+Fix: use a virtual environment:
+  python3 -m venv .venv
+  source .venv/bin/activate
+  pip install numpy
+
+Or, if you just want to install it quickly:
+  pip install numpy --break-system-packages
+```
+
+---
+
+### Writing and running scripts
+
+Ask the AI to write a script, save it to memory, then execute it:
+
+```
+⬡ axon ~/ ❯ ? write a bash script that renames all .jpeg files to .jpg in the current folder
+```
+```bash
+#!/bin/bash
+for f in *.jpeg; do
+  [ -f "$f" ] && mv "$f" "${f%.jpeg}.jpg"
+done
+echo "Done."
+```
+
+```
+⬡ axon ~/ ❯ mem save rename-jpeg
+⬡ axon ~/ ❯ mem run rename-jpeg
+Done.
+```
+
+---
+
+### Using AI mode for unknown commands
+
+In AI mode, any command that isn't found is automatically sent to the AI:
+
+```
+⬡ axon ~/ ❯ axon ai
+
+⬡ axon ~/ ❯ deploy my app to staging
+```
+```
+To deploy to staging I'll need a bit more context. What's your stack?
+If you're using a Makefile, try: make deploy-staging
+If you're on Heroku: heroku git:remote -a your-app-staging && git push heroku main
+...
+```
+
+---
+
+### Persistent memory
+
+Save useful AI responses and retrieve them in future sessions:
+
+```
+⬡ axon ~/ ❯ ? what are the most useful git commands for undoing mistakes
+```
+*(AI responds with a detailed list)*
+
+```
+⬡ axon ~/ ❯ mem save git-undo-cheatsheet
+Saved → git-undo-cheatsheet
+
+⬡ axon ~/ ❯ mem list
+  1  git-undo-cheatsheet
+  2  rename-jpeg
+
+⬡ axon ~/ ❯ mem show git-undo-cheatsheet
+```
+
+Memory persists across sessions in `~/.axon/axonVM/` and is automatically injected as context into relevant AI queries.
+
+---
+
+### Switching models
+
+```
+# Switch to a local Ollama model (no API key needed)
+⬡ axon ~/ ❯ axon model pull llama3.2
+⬡ axon ~/ ❯ axon model use llama3.2
+
+# Switch to a remote API (Groq example)
+⬡ axon ~/ ❯ axon remote key gsk_...
+⬡ axon ~/ ❯ axon remote url https://api.groq.com/openai/v1
+⬡ axon ~/ ❯ axon remote model llama-3.3-70b-versatile
+⬡ axon ~/ ❯ axon remote on
+
+# Back to Claude
+⬡ axon ~/ ❯ axon model claude
 ```
 
 ---
@@ -128,13 +217,13 @@ axon remote on                                    # activate
 ## Command Reference
 
 ### Mode
-```zsh
+```
 axon ai          # activate AI mode
 axon legacy      # return to standard shell mode
 ```
 
 ### Models
-```zsh
+```
 axon model claude              # switch to Claude
 axon model pull <name>         # download Ollama model
 axon model use <name>          # switch to Ollama model
@@ -146,82 +235,39 @@ axon remote model <name>       # set remote model name
 axon remote on                 # activate remote model
 ```
 
+### Memory
+```
+mem save <label>               # save last AI response
+mem import <label> <file>      # import a file into memory
+mem list                       # list all saved entries
+mem show <id>                  # display an entry
+mem retrieve <id>              # raw content only
+mem run <id>                   # execute saved code
+mem rm <id>                    # delete an entry
+mem clear                      # clear all entries
+```
+
 ### History
-```zsh
+```
 axon history     # list past AI queries (numbered)
 axhist           # full conversation log (user + assistant)
 ```
 
 ---
 
-## Architecture
+## Features
 
-```
-axon_terminal/
-├── lib/
-│   ├── ai/
-│   │   ├── ai_service.dart      # Claude API streaming
-│   │   ├── history_store.dart   # Persistent JSONL history (~/.axon/axonVM/history.jsonl)
-│   │   └── providers.dart       # Riverpod providers (mode, settings, key)
-│   ├── memory/
-│   │   └── memory_store.dart    # JSON memory entries, keyword scoring, top-3 injection
-│   ├── server/
-│   │   └── axon_server.dart     # HttpServer on port 9099; shell init script builder
-│   ├── shell/
-│   │   └── shell_session.dart   # PTY via flutter_pty; auto-detects $SHELL → zsh → bash → sh
-│   ├── pages/
-│   │   └── home_page.dart       # UI: title bar, tabs, sidebar, all dialogs
-│   └── app/
-│       ├── app.dart
-│       └── theme.dart           # AxonTheme constants
-├── macos/
-│   └── Runner/
-│       ├── Release.entitlements # No sandbox; network client+server; file access
-│       └── MainFlutterWindow.swift  # 80% screen, centered window
-└── linux/
-    └── runner/
-        └── my_application.cc    # 80% monitor workarea, centered window (GdkDisplay API)
-```
-
-### How the shell hook works
-Axon injects an init script 900ms after PTY start. The script:
-- Sets `command_not_found_handler` to POST unknown commands to `localhost:9099/query`
-- Registers `?` as a prefix alias that POSTs to `/query` from any mode
-- Sets `precmd_functions` to enforce the `⬡ axon ~/` prompt in AI mode and emit OSC-2 for tab title updates
-- Saves AI queries to shell history via `print -s`
-
-The HTTP server (`axon_server.dart`) bridges the shell hook to the AI service and streams responses back to the terminal.
-
----
-
-## Building from Source
-
-### macOS
-```zsh
-# Prerequisites: Flutter 3.x, Xcode 15+, CocoaPods
-
-git clone https://github.com/Treillint/axon-terminal.git
-cd axon-terminal
-flutter pub get
-cd macos && pod install && cd ..
-flutter run -d macos
-```
-
-To build a distributable DMG (signs, notarizes, staples):
-```zsh
-./build_dmg.sh
-```
-
-### Linux ARM64
-```bash
-# Prerequisites: Ubuntu 22.04+ on ARM64, ~/flutter-framework.tar.gz, ~/dart-sdk-linux-arm64.zip
-
-git clone https://github.com/Treillint/axon-terminal.git
-cd axon-terminal
-bash build_appimage.sh
-```
-
-Produces `AxonTerminal.AppImage` in the current directory.
+| Feature | Description |
+|---|---|
+| `? <question>` | Ask AI anything, from any mode |
+| AI mode | Unknown commands auto-routed to AI |
+| Streaming | Responses appear token by token |
+| Multi-tab | `⌘T` new tab · `⌘W` close tab |
+| Font size | `⌘+` / `⌘-` |
+| Shell history | AI queries saved to history (up-arrow recall) |
+| Axon VM | Persistent RAG memory in `~/.axon/axonVM/` |
+| Local models | Ollama — fully offline, no API key |
+| Remote APIs | Groq, Together, OpenRouter, any OpenAI-compatible endpoint |
 
 ---
 
