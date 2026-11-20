@@ -310,8 +310,15 @@ MIT © 2026 [Treillint LLC](https://treillint.com)
 
 ---
 
+## Feedback & Discussions
+
+Have a feature idea, question, or found a bug? Use [GitHub Discussions](https://github.com/Treillint/axon-terminal/discussions) — no issue template required, just post.
+
+---
+
 <p align="center">
   Built by <a href="https://treillint.com">Treillint LLC</a> · 
   <a href="https://treillint.github.io/axon-terminal">Download</a> · 
-  <a href="https://github.com/Treillint/axon-terminal/releases">Releases</a>
+  <a href="https://github.com/Treillint/axon-terminal/releases">Releases</a> · 
+  <a href="https://github.com/Treillint/axon-terminal/discussions">Discussions</a>
 </p>
