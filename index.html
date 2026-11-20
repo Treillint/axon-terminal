@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Axon Terminal — AI-native terminal</title>
+<title>Axon Terminal — AI-native terminal for macOS, Linux &amp; Windows</title>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
@@ -21,6 +21,7 @@
   .downloads{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;align-items:center;}
   .download{display:inline-flex;align-items:center;gap:10px;background:#00ff88;color:#0d1117;font-size:15px;font-weight:700;padding:14px 32px;border-radius:6px;text-decoration:none;letter-spacing:0.3px;transition:opacity 0.15s;}
   .download.linux{background:#161b22;color:#00ff88;border:1px solid #00ff88;}
+  .download.windows{background:#0067b8;color:#fff;border:1px solid #0067b8;}
   .download:hover{opacity:0.88;}
   .download svg{width:18px;height:18px;flex-shrink:0;}
   .dl-meta{margin-top:10px;font-size:11px;color:#484f58;text-align:center;}
@@ -66,7 +67,7 @@
   <div class="badge">⬡ FREE DOWNLOAD</div>
 
   <h1>Axon <span>Terminal</span></h1>
-  <p class="sub">An AI-native terminal for macOS and Linux. Claude lives inside your shell — ask questions, get explanations, run commands, all without leaving the prompt.</p>
+  <p class="sub">An AI-native terminal for macOS, Linux and Windows. Claude lives inside your shell — ask questions, get explanations, run commands, all without leaving the prompt.</p>
 
   <div class="features">
     <div class="feat"><strong>AI Mode</strong>Unknown commands routed to Claude</div>
@@ -100,6 +101,18 @@
         Download for Linux
       </a>
       <p class="dl-meta">Ubuntu 22.04+ / Debian 12+ · ARM64</p>
+    </div>
+    <div>
+      <a class="download windows" href="https://github.com/Treillint/axon-terminal/releases/latest/download/AxonTerminal.msix">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Download for Windows
+      </a>
+      <p class="dl-meta">Windows 10 version 1903+ · x64</p>
+      <p class="brew-hint">or: <code>winget install Treillint.AxonTerminal</code></p>
     </div>
   </div>
 
