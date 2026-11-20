@@ -4,11 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Axon Terminal — AI-native terminal</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
-  body{background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Menlo',monospace;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;}
+  body{background:#0d1117;color:#e6edf3;font-family:-apple-system,BlinkMacSystemFont,'Menlo',monospace;min-height:100vh;padding:0;}
+
+  /* ── Hero ── */
+  .hero{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px 48px;}
   .badge{display:inline-block;background:rgba(0,255,136,0.1);border:1px solid #00ff88;color:#00ff88;font-size:11px;letter-spacing:1px;padding:4px 12px;border-radius:4px;margin-bottom:28px;}
-  h1{font-size:42px;font-weight:700;letter-spacing:-1px;margin-bottom:10px;}
+  h1{font-size:42px;font-weight:700;letter-spacing:-1px;margin-bottom:10px;text-align:center;}
   h1 span{color:#00ff88;}
   .sub{color:#8b949e;font-size:16px;margin-bottom:40px;line-height:1.6;text-align:center;max-width:480px;}
   .features{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:48px;}
@@ -18,60 +22,97 @@
   .download{display:inline-flex;align-items:center;gap:10px;background:#00ff88;color:#0d1117;font-size:15px;font-weight:700;padding:14px 32px;border-radius:6px;text-decoration:none;letter-spacing:0.3px;transition:opacity 0.15s;}
   .download.linux{background:#161b22;color:#00ff88;border:1px solid #00ff88;}
   .download:hover{opacity:0.88;}
-  .download svg{width:18px;height:18px;}
-  .meta{margin-top:14px;font-size:11px;color:#484f58;text-align:center;}
-  .req{margin-top:48px;font-size:11px;color:#484f58;text-align:center;}
-  .footer{margin-top:64px;font-size:11px;color:#484f58;text-align:center;border-top:1px solid #21262d;padding-top:24px;width:100%;max-width:600px;}
+  .download svg{width:18px;height:18px;flex-shrink:0;}
+  .dl-meta{margin-top:10px;font-size:11px;color:#484f58;text-align:center;}
+  .req{margin-top:36px;font-size:11px;color:#484f58;text-align:center;}
+  .req a{color:#00ff88;text-decoration:none;}
+
+  /* ── README section ── */
+  .readme-wrap{max-width:860px;margin:0 auto;padding:0 24px 80px;}
+  .readme-divider{border:none;border-top:1px solid #21262d;margin:0 0 48px;}
+
+  /* ── Markdown styles ── */
+  .readme h1,.readme h2,.readme h3,.readme h4{color:#e6edf3;font-weight:600;margin:1.5em 0 0.6em;}
+  .readme h1{font-size:1.8em;border-bottom:1px solid #21262d;padding-bottom:0.4em;}
+  .readme h2{font-size:1.4em;border-bottom:1px solid #21262d;padding-bottom:0.3em;}
+  .readme h3{font-size:1.1em;}
+  .readme p{color:#8b949e;line-height:1.75;margin:0.8em 0;}
+  .readme a{color:#00ff88;text-decoration:none;}
+  .readme a:hover{text-decoration:underline;}
+  .readme strong{color:#e6edf3;}
+  .readme ul,.readme ol{color:#8b949e;padding-left:1.5em;margin:0.6em 0;}
+  .readme li{margin:0.3em 0;line-height:1.65;}
+  .readme code{background:#161b22;border:1px solid #21262d;border-radius:4px;padding:2px 6px;font-size:0.85em;color:#00ff88;font-family:'Menlo','Monaco','Courier New',monospace;}
+  .readme pre{background:#161b22;border:1px solid #21262d;border-radius:6px;padding:16px;overflow-x:auto;margin:1em 0;}
+  .readme pre code{background:none;border:none;padding:0;font-size:0.82em;color:#e6edf3;}
+  .readme table{border-collapse:collapse;width:100%;margin:1em 0;}
+  .readme th{background:#161b22;color:#e6edf3;padding:8px 12px;text-align:left;border:1px solid #21262d;font-size:0.9em;}
+  .readme td{padding:8px 12px;border:1px solid #21262d;color:#8b949e;font-size:0.88em;}
+  .readme tr:nth-child(even) td{background:rgba(255,255,255,0.02);}
+  .readme blockquote{border-left:3px solid #00ff88;padding:0.5em 1em;margin:1em 0;color:#8b949e;}
+  .readme hr{border:none;border-top:1px solid #21262d;margin:2em 0;}
+  .readme img{max-width:100%;}
+
+  /* ── Footer ── */
+  .footer{font-size:11px;color:#484f58;text-align:center;border-top:1px solid #21262d;padding:24px 20px;margin-top:0;}
   .footer a{color:#484f58;text-decoration:none;}
   .footer a:hover{color:#8b949e;}
-  code{background:#161b22;border:1px solid #21262d;border-radius:3px;padding:2px 6px;font-size:11px;color:#00ff88;}
 </style>
 </head>
 <body>
 
-<div class="badge">⬡ FREE DOWNLOAD</div>
+<!-- ── Hero / Download ─────────────────────────────────────────────── -->
+<div class="hero">
+  <div class="badge">⬡ FREE DOWNLOAD</div>
 
-<h1>Axon <span>Terminal</span></h1>
-<p class="sub">An AI-native terminal for macOS and Linux. Claude lives inside your shell — ask questions, get explanations, run commands, all without leaving the prompt.</p>
+  <h1>Axon <span>Terminal</span></h1>
+  <p class="sub">An AI-native terminal for macOS and Linux. Claude lives inside your shell — ask questions, get explanations, run commands, all without leaving the prompt.</p>
 
-<div class="features">
-  <div class="feat"><strong>AI Mode</strong>Unknown commands routed to Claude</div>
-  <div class="feat"><strong>Axon VM</strong>Persistent RAG memory store</div>
-  <div class="feat"><strong>Local Models</strong>Ollama integration built-in</div>
-  <div class="feat"><strong>Remote APIs</strong>Groq, Together, OpenRouter</div>
-  <div class="feat"><strong>Multi-tab</strong>⌘T / ⌘W tab management</div>
-  <div class="feat"><strong>? prefix</strong>Ask AI anything, any mode</div>
+  <div class="features">
+    <div class="feat"><strong>AI Mode</strong>Unknown commands routed to Claude</div>
+    <div class="feat"><strong>Axon VM</strong>Persistent RAG memory store</div>
+    <div class="feat"><strong>Local Models</strong>Ollama integration built-in</div>
+    <div class="feat"><strong>Remote APIs</strong>Groq, Together, OpenRouter</div>
+    <div class="feat"><strong>Multi-tab</strong>⌘T / ⌘W tab management</div>
+    <div class="feat"><strong>? prefix</strong>Ask AI anything, any mode</div>
+  </div>
+
+  <div class="downloads">
+    <div>
+      <a class="download" href="https://github.com/Treillint/axon-terminal/releases/latest/download/AxonTerminal.dmg">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Download for macOS
+      </a>
+      <p class="dl-meta">macOS 13 Ventura or later · Apple Silicon + Intel</p>
+    </div>
+    <div>
+      <a class="download linux" href="https://github.com/Treillint/axon-terminal/releases/latest/download/AxonTerminal.AppImage">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Download for Linux
+      </a>
+      <p class="dl-meta">Ubuntu 22.04+ / Debian 12+ · ARM64</p>
+    </div>
+  </div>
+
+  <p class="req">
+    Requires an <a href="https://www.anthropic.com">Anthropic API key</a> for Claude AI mode.
+    Local models via <a href="https://ollama.com">Ollama</a> work without a key.
+  </p>
 </div>
 
-<div class="downloads">
-  <div style="text-align:center;">
-    <a class="download" href="https://github.com/Treillint/axon-terminal/releases/latest/download/AxonTerminal.dmg">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-        <polyline points="7 10 12 15 17 10"/>
-        <line x1="12" y1="15" x2="12" y2="3"/>
-      </svg>
-      Download for macOS
-    </a>
-    <p class="meta">macOS 13 Ventura or later &nbsp;·&nbsp; Apple Silicon + Intel</p>
-  </div>
-  <div style="text-align:center;">
-    <a class="download linux" href="https://github.com/Treillint/axon-terminal/releases/latest/download/AxonTerminal.AppImage">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-        <polyline points="7 10 12 15 17 10"/>
-        <line x1="12" y1="15" x2="12" y2="3"/>
-      </svg>
-      Download for Linux
-    </a>
-    <p class="meta">Ubuntu 22.04+ / Debian 12+ &nbsp;·&nbsp; ARM64</p>
-  </div>
+<!-- ── README ──────────────────────────────────────────────────────── -->
+<div class="readme-wrap">
+  <hr class="readme-divider">
+  <div id="readme" class="readme"><p style="color:#484f58;text-align:center;">Loading documentation…</p></div>
 </div>
-
-<p class="req">
-  Requires an <a href="https://www.anthropic.com" style="color:#00ff88;text-decoration:none;">Anthropic API key</a> for Claude AI mode.
-  Local models via <a href="https://ollama.com" style="color:#00ff88;text-decoration:none;">Ollama</a> work without a key.
-</p>
 
 <div class="footer">
   <p>
@@ -81,9 +122,21 @@
     &nbsp;·&nbsp;
     &copy; 2026 Treillint LLC
   </p>
-  <p style="margin-top:8px;">macOS: open the DMG and drag <code>Axon Terminal</code> to <code>Applications</code></p>
-  <p style="margin-top:4px;">Linux: <code>chmod +x AxonTerminal.AppImage && ./AxonTerminal.AppImage</code></p>
 </div>
+
+<script>
+  fetch('https://raw.githubusercontent.com/Treillint/axon-terminal/main/README.md')
+    .then(r => r.text())
+    .then(md => {
+      // Strip the top-level H1 (already shown as hero title)
+      const body = md.replace(/^#\s+.*\n/, '');
+      document.getElementById('readme').innerHTML = marked.parse(body);
+    })
+    .catch(() => {
+      document.getElementById('readme').innerHTML =
+        '<p style="color:#484f58;text-align:center;">See full documentation on <a href="https://github.com/Treillint/axon-terminal" style="color:#00ff88;">GitHub</a>.</p>';
+    });
+</script>
 
 </body>
 </html>
