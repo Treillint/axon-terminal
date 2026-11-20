@@ -20,6 +20,14 @@ The result: a terminal that understands what you're trying to do.
 ## Installation
 
 ### macOS
+
+#### Homebrew (recommended)
+```bash
+brew tap treillint/tap
+brew install --cask axon-terminal
+```
+
+#### Direct download
 1. Go to [treillint.github.io/axon-terminal](https://treillint.github.io/axon-terminal)
 2. Click **Download for macOS**
 3. Open `AxonTerminal.dmg`
