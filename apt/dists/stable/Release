@@ -1,0 +1,14 @@
+Origin: Treillint
+Label: Treillint
+Suite: stable
+Codename: stable
+Architectures: arm64
+Components: main
+Description: Axon Terminal apt repository
+Date: Sat, 21 Nov 2026 00:00:23 UTC
+MD5Sum:
+ 690de0c63d83aa23357592893960d60c 786 main/binary-arm64/Packages
+ 4e1553d8f23d8cefa9466e08d68a84e7 553 main/binary-arm64/Packages.gz
+SHA256:
+ 05db40149e31c65ee1eea3b753c1e1289f08111f54ffa764ef44362a8ec4ca54 786 main/binary-arm64/Packages
+ efe6c35d064242516e53312f4bbc3203fe496b12eddc45b410cb19fb70894f61 553 main/binary-arm64/Packages.gz

@@ -1,0 +1,19 @@
+Package: axon-terminal
+Version: 1.0.0
+Architecture: arm64
+Maintainer: Treillint LLC <hello@treillint.com>
+Installed-Size: 23384
+Depends: libgtk-3-0, libblkid1, liblzma5
+Filename: pool/main/a/axon-terminal/axon-terminal_1.0.0_arm64.deb
+Size: 8469242
+MD5sum: c50d7f5985eae6a4ba40eb68d91967aa
+SHA1: 06e6d48b965cabe07481ba6f59d5d9e47fb43872
+SHA256: d228bd80b6c6df6a17b64699fdbc8dacbd8ad48af26bdcbbb53e77886856d080
+Section: utils
+Priority: optional
+Homepage: https://treillint.github.io/axon-terminal
+Description: AI-native terminal — Claude lives inside your shell
+ Axon Terminal layers AI on top of a real shell session. Unknown commands
+ are routed to Claude (or a local Ollama model), persistent memory stores
+ context across sessions, and remote APIs (Groq, Together) are supported.
+

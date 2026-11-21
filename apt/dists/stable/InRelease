@@ -1,0 +1,34 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Origin: Treillint
+Label: Treillint
+Suite: stable
+Codename: stable
+Architectures: arm64
+Components: main
+Description: Axon Terminal apt repository
+Date: Sat, 21 Nov 2026 00:00:23 UTC
+MD5Sum:
+ 690de0c63d83aa23357592893960d60c 786 main/binary-arm64/Packages
+ 4e1553d8f23d8cefa9466e08d68a84e7 553 main/binary-arm64/Packages.gz
+SHA256:
+ 05db40149e31c65ee1eea3b753c1e1289f08111f54ffa764ef44362a8ec4ca54 786 main/binary-arm64/Packages
+ efe6c35d064242516e53312f4bbc3203fe496b12eddc45b410cb19fb70894f61 553 main/binary-arm64/Packages.gz
+-----BEGIN PGP SIGNATURE-----
+
+iQJPBAEBCAA5FiEEoXhW85zpLVSv3UvVQ/kKqwb7YdwFAmsA3xcbFIAAAAAABAAO
+bWFudTIsMi41KzEuMTIsMCwzAAoJEEP5CqsG+2HcDKIP/3tvfEm+oQ44ucdxw83h
+rCxZk7GWJ2z3l+VGDlRXKL8SpAhPi4gESweg0wP3lxTwo7IYx5Iw9UKjE7hBS18H
+bNCbAcLVLjYLAMVWcwojaarZrp+jGIGHKSZOGmHjCWVfD+IW2kpJESuxQvnRhv7e
+52vClnFpJqZb3uvygSnayJ7rD/pZUX/ggoQb87By2eLvpPRB4+4PuHkTqiBXdfe9
+DAnYojsKwIu2g/p7NW1euc3cVpGzcstPHIriod8BXaNTpjUBKD9Mq27PjUnLDWah
+oLagXQfpVSH+qbKWb/xIxIhNi1EvCHFOgAjhdWcZJF3ybB4+zDjptLd9fpo00lhB
+t1n9qdl1pjS9aP0ZSPlBkgMceV3IszznBet1A178GYNz0giuYwuFghwXX/QDSdZU
+haaLEnB3Y6JBvp56eKY27F16lCsD+UeJ76YBRphMDo5sk/ytOvaEQm+WsgYrKhMN
+fmyNYTOimTkZem0CZXJ27mKqIV/XUa0zLpK7bURLYIjCi9fQjRt4GCRP4c/JR4S5
+fendP9T1i0fa8tH5QnSyOTTSsJdLJcDyK7nEYyIXoVWVENYtsMfW3aRr9WOhqQmC
+waayNEUcRoSDF4iTgd12Pys5V8XTsIJmajZBRLQH7eLUHTllU7JcqU/XQXnd9lxG
+w/ovbgJz/iWYmj2fLeWGUFyZ
+=H82P
+-----END PGP SIGNATURE-----
